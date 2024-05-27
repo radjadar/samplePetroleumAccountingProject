@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://petroleumDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="petroleumDc"
+                  class="com.company.samplepetroleumaccountingproject.entity.Petroleum">
+            <fetchPlan extends="_base">
+                <!--property name="priceDetails" fetchPlan="_base"/-->
+            </fetchPlan>
+            <loader/>
+            <!--collection id="priceDetailsDc" property="priceDetails"/-->
+        </instance>
+        <keyValueCollection id="priceDetailsDc">
+            <loader>
+                <query>
+                    <![CDATA[select p.date, MAX(p.price)
+                    from PetroleumPriceDetail p
+                    where p.petroleum = :container_petroleumDc
+                    group by p.date
+                    order by p.date desc]]>
+                </query>
+            </loader>
+            <properties>
+                <property name="date" datatype="localDate"/>
+                <!--property name="tank"/-->
+                <property name="price" datatype="double"/>
+            </properties>
+        </keyValueCollection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="petroleumDc">
+            <textField id="nameField" property="name"/>
+            <textField id="ecoClassField" property="ecoClass"/>
+        </formLayout>
+        <details summaryText="msg://com.company.samplepetroleumaccountingproject.entity/Petroleum.priceDetails"
+                 width="100%">
+            <dataGrid id="priceDetailsDataGrid" dataContainer="priceDetailsDc" width="100%" minHeight="20em">
+                <columns>
+                    <column property="date" header="msg://date.header"/>
+                    <!--column property="tank" header="msg://tank.header"/-->
+                    <column property="price" header="msg://price.header"/>
+                </columns>
+            </dataGrid>
+        </details>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

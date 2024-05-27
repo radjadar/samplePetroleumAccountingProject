@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://petroleumOperationDetailDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="petroleumOperationDetailDc"
+                  class="com.company.samplepetroleumaccountingproject.entity.PetroleumOperationDetail">
+            <fetchPlan extends="_base">
+                <property name="petroleum" fetchPlan="_base"/>
+                <property name="tank" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection id="tanksDc" class="com.company.samplepetroleumaccountingproject.entity.Tank">
+            <loader id="tanksDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Tank e where e.petroleum = :component_petroleumField]]>
+                </query>
+            </loader>
+            <fetchPlan extends="_base"/>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="petroleumOperationDetailDc">
+            <entityPicker id="petroleumField" property="petroleum">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <numberField id="densityField" property="density"/>
+            <numberField id="massField" property="mass"/>
+            <numberField id="volumeField" property="volume" readOnly="true"/>
+            <numberField id="priceField" property="price"/>
+            <numberField id="costField" property="cost" readOnly="true"/>
+            <entityComboBox id="tankField" property="tank" itemsContainer="tanksDc">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup" visible="false"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityComboBox>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

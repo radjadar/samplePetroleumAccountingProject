@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://warehouseStatListView.title"
+      focusComponent="datePicker">
+    <data>
+        <collection id="warehouseStatsDc"
+                    class="com.company.samplepetroleumaccountingproject.entity.WarehouseStat">
+            <loader id="warehouseStatsDl" readOnly="true"/>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+        <settings>
+            <component id="warehouseStatsDataGrid"/>
+        </settings>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <datePicker id="datePicker" datatype="localDateTime"/>
+            <simplePagination id="pagination" dataLoader="warehouseStatsDl"/>
+        </hbox>
+        <dataGrid id="warehouseStatsDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="warehouseStatsDc"
+                  columnReorderingAllowed="true" multiSort="true">
+            <actions>
+            </actions>
+            <columns resizable="true">
+                <column property="tank"/>
+                <column property="petroleum"/>
+                <column property="ecoClass"/>
+                <column property="volume"/>
+                <column property="mass"/>
+                <column property="density"/>
+                <column property="cost"/>
+                <column property="price"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>

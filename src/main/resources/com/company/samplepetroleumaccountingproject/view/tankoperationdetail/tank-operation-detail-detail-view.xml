@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://tankOperationDetailDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="tankOperationDetailDc"
+                  class="com.company.samplepetroleumaccountingproject.entity.TankOperationDetail">
+            <fetchPlan extends="_base">
+                <property name="user" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="tankOperationDetailDc">
+            <datePicker id="dateField" property="date"/>
+            <entityPicker id="userField" property="user">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <checkbox id="approvedField" property="approved"/>
+            <numberField id="temperatureField" property="temperature"/>
+            <numberField id="densityField" property="density"/>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

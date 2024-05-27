@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://petroleumOperationListView.title"
+      focusComponent="petroleumOperationsDataGrid">
+    <data>
+        <collection id="petroleumOperationsDc"
+                    class="com.company.samplepetroleumaccountingproject.entity.PetroleumOperation">
+            <fetchPlan extends="_base">
+                <property name="supplierClient" fetchPlan="_base"/>
+                <property name="operatingAccount" fetchPlan="_base"/>
+                <property name="senderReceiver" fetchPlan="_base"/>
+                <property name="vehicle" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="petroleumOperationsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from PetroleumOperation e
+                    order by e.date desc]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+        <settings auto="true"/>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="petroleumOperationsDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createBtn" action="petroleumOperationsDataGrid.create"/>
+            <button id="editBtn" action="petroleumOperationsDataGrid.edit"/>
+            <button id="removeBtn" action="petroleumOperationsDataGrid.remove"/>
+            <simplePagination id="pagination" dataLoader="petroleumOperationsDl"/>
+        </hbox>
+        <dataGrid id="petroleumOperationsDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="petroleumOperationsDc"
+                  columnReorderingAllowed="true">
+            <actions>
+                <action id="create" type="list_create"/>
+                <action id="edit" type="list_edit"/>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns resizable="true">
+                <column property="date"/>
+                <column property="operationType"/>
+                <column property="supplierClient"/>
+                <column property="operatingAccount"/>
+                <column property="senderReceiver"/>
+                <column property="vehicle"/>
+                <column property="vehicleDetails"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>

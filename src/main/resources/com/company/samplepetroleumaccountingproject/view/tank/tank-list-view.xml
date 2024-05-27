@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://tankListView.title"
+      focusComponent="tanksDataGrid">
+    <data>
+        <collection id="tanksDc"
+                    class="com.company.samplepetroleumaccountingproject.entity.Tank">
+            <fetchPlan extends="_base">
+                <property name="petroleum" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="tanksDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Tank e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="tanksDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createBtn" action="tanksDataGrid.create"/>
+            <button id="editBtn" action="tanksDataGrid.edit"/>
+            <button id="removeBtn" action="tanksDataGrid.remove"/>
+            <simplePagination id="pagination" dataLoader="tanksDl"/>
+        </hbox>
+        <dataGrid id="tanksDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="tanksDc"
+                  columnReorderingAllowed="true">
+            <actions>
+                <action id="create" type="list_create"/>
+                <action id="edit" type="list_edit"/>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns resizable="true">
+                <column property="mark"/>
+                <column property="petroleum"/>
+                <column property="maxVolume"/>
+                <column property="minVolume"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>

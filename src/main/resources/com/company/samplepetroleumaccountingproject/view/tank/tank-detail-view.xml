@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://tankDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="tankDc"
+                  class="com.company.samplepetroleumaccountingproject.entity.Tank">
+            <fetchPlan extends="_base">
+                <property name="petroleum" fetchPlan="_base"/>
+                <property name="operationDetails" fetchPlan="_base">
+                    <property name="user" fetchPlan="_base"/>
+                </property>
+            </fetchPlan>
+            <loader/>
+            <collection id="operationDetailsDc" property="operationDetails"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="tankDc">
+            <textField id="markField" property="mark"/>
+            <entityPicker id="petroleumField" property="petroleum" readOnly="true">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <numberField id="maxVolumeField" property="maxVolume"/>
+            <numberField id="minVolumeField" property="minVolume"/>
+        </formLayout>
+        <details summaryText="msg://com.company.samplepetroleumaccountingproject.entity/Tank.operationDetails"
+                 width="100%" opened="true">
+            <hbox id="buttonsPanel" classNames="buttons-panel">
+                <button action="operationDetailsDataGrid.create"/>
+                <button action="operationDetailsDataGrid.edit"/>
+                <button action="operationDetailsDataGrid.remove"/>
+            </hbox>
+            <dataGrid id="operationDetailsDataGrid" dataContainer="operationDetailsDc" width="100%" minHeight="20em">
+                <actions>
+                    <action id="create" type="list_create">
+                        <properties>
+                            <property name="openMode" value="DIALOG"/>
+                        </properties>
+                    </action>
+                    <action id="edit" type="list_edit">
+                        <properties>
+                            <property name="openMode" value="DIALOG"/>
+                        </properties>
+                    </action>
+                    <action id="remove" type="list_remove"/>
+                </actions>
+                <columns>
+                    <column property="date"/>
+                    <column property="user"/>
+                    <column property="approved"/>
+                    <column property="temperature"/>
+                    <column property="density"/>
+                </columns>
+            </dataGrid>
+        </details>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://partnerListView.title"
+      focusComponent="partnersDataGrid">
+    <data>
+        <collection id="partnersDc"
+                    class="com.company.samplepetroleumaccountingproject.entity.Partner">
+            <fetchPlan extends="_base">
+                <property name="ceo" fetchPlan="_base"/>
+                <property name="operatingAccount" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="partnersDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Partner e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="partnersDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createBtn" action="partnersDataGrid.create"/>
+            <button id="editBtn" action="partnersDataGrid.edit"/>
+            <button id="removeBtn" action="partnersDataGrid.remove"/>
+            <simplePagination id="pagination" dataLoader="partnersDl"/>
+        </hbox>
+        <dataGrid id="partnersDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="partnersDc"
+                  columnReorderingAllowed="true">
+            <actions>
+                <action id="create" type="list_create"/>
+                <action id="edit" type="list_edit"/>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns resizable="true">
+                <column property="shortName"/>
+                <column property="fullName"/>
+                <column property="inn"/>
+                <column property="kpp"/>
+                <column property="legalAddress"/>
+                <column property="physicalAddress"/>
+                <column property="ceo"/>
+                <column property="operatingAccount"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>

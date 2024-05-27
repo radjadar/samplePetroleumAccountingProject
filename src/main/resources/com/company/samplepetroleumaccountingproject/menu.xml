@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://jmix.io/schema/flowui/menu">
+
+    <item view="WarehouseStat.list"
+          title="msg://com.company.samplepetroleumaccountingproject.view.warehousestat/warehouseStatListView.title"/>
+    <menu id="application" title="msg://com.company.samplepetroleumaccountingproject/menu.application.title" opened="true">
+        <item view="PetroleumOperation.list"
+              title="msg://com.company.samplepetroleumaccountingproject.view.petroleumoperation/petroleumOperationListView.title"/>
+    </menu>
+    <menu id="mdm" title="msg://com.company.samplepetroleumaccountingproject/menu.mdm.title" opened="true">
+        <item view="User.list" title="msg://com.company.samplepetroleumaccountingproject.view.user/UserListView.title"/>
+        <item view="Partner.list"
+              title="msg://com.company.samplepetroleumaccountingproject.view.partner/partnerListView.title"/>
+        <item view="Petroleum.list"
+              title="msg://com.company.samplepetroleumaccountingproject.view.petroleum/petroleumListView.title"/>
+        <item view="Tank.list" title="msg://com.company.samplepetroleumaccountingproject.view.tank/tankListView.title"/>
+        <item view="Vehicle.list"
+              title="msg://com.company.samplepetroleumaccountingproject.view.vehicle/vehicleListView.title"/>
+    </menu>
+
+</menu-config>

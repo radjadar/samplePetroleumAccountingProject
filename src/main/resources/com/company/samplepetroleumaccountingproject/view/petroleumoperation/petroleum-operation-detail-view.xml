@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://petroleumOperationDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="petroleumOperationDc"
+                  class="com.company.samplepetroleumaccountingproject.entity.PetroleumOperation">
+            <fetchPlan extends="_base">
+                <property name="supplierClient" fetchPlan="_base"/>
+                <property name="operatingAccount" fetchPlan="_base"/>
+                <property name="senderReceiver" fetchPlan="_base"/>
+                <property name="vehicle" fetchPlan="_base"/>
+                <property name="operationDetails" fetchPlan="_base">
+                    <property name="petroleum" fetchPlan="_base"/>
+                    <property name="tank" fetchPlan="_base"/>
+                </property>
+            </fetchPlan>
+            <loader/>
+            <collection id="operationDetailsDc" property="operationDetails"/>
+        </instance>
+        <collection id="bankAccountsDc" class="com.company.samplepetroleumaccountingproject.entity.BankAccount">
+            <loader id="bankAccountsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from BankAccount e where e.partner = :component_supplierClientField]]>
+                </query>
+            </loader>
+            <fetchPlan extends="_base"/>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="petroleumOperationDc">
+            <dateTimePicker id="dateField" property="date"/>
+            <select id="operationTypeField" property="operationType"/>
+            <entityPicker id="supplierClientField" property="supplierClient">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <entityComboBox id="operatingAccountField" property="operatingAccount" itemsContainer="bankAccountsDc">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup" visible="false"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityComboBox>
+            <entityPicker id="senderReceiverField" property="senderReceiver">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <entityPicker id="vehicleField" property="vehicle">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <textArea id="vehicleDetailsField" height="9.5em" property="vehicleDetails"/>
+        </formLayout>
+        <h4 text="msg://com.company.samplepetroleumaccountingproject.entity/PetroleumOperation.operationDetails"/>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button action="operationDetailsDataGrid.create"/>
+            <button action="operationDetailsDataGrid.edit"/>
+            <button action="operationDetailsDataGrid.remove"/>
+        </hbox>
+        <dataGrid id="operationDetailsDataGrid" dataContainer="operationDetailsDc" width="100%" minHeight="20em"
+                  aggregatable="true">
+            <actions>
+                <action id="create" type="list_create">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="edit" type="list_edit">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns>
+                <column property="petroleum"/>
+                <column property="density"/>
+                <column property="mass">
+                    <aggregation type="SUM"/>
+                </column>
+                <column property="volume">
+                    <aggregation type="SUM"/>
+                </column>
+                <column property="price"/>
+                <column property="cost">
+                    <aggregation type="SUM"/>
+                </column>
+                <column property="tank"/>
+            </columns>
+        </dataGrid>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>
